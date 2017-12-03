@@ -14,7 +14,7 @@ public class LinkedList {
 	}
 	
 	
-	public void insertCandidate( int candidateNumber, String candidateFirstName, String candidateLastName,  String candidateArrivalDate, String candidatePassportNo,  boolean kidLess3, boolean kidLess1 ) {
+	public Candidate insertCandidate( int candidateNumber, String candidateFirstName, String candidateLastName,  String candidateArrivalDate, String candidatePassportNo,  boolean kidLess3, boolean kidLess1 ) {
 		Candidate newCandidate = new Candidate(candidateNumber,  candidateFirstName,  candidateLastName, candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1 );
 		if(firstCandidate==null&&lastCandidate==null) {
 			lastCandidate = newCandidate;
@@ -38,20 +38,24 @@ public class LinkedList {
 			newCandidate.pastCandidate = tempNextCandidate.pastCandidate;
 			tempNextCandidate.pastCandidate = newCandidate;
 			tempPastCandidate.nextCandidate = newCandidate;
-			
-			System.out.println("dsddfsdf");
-			System.out.println(size/2);
+
 		} else {
 			lastCandidate.nextCandidate = newCandidate;
 			newCandidate.pastCandidate = lastCandidate;
 			lastCandidate = newCandidate;
 		}		  
 		size++;
+		return newCandidate;
 	}
 	
-	public void insertCandidate( int candidateNumber, String candidateFirstName, String candidateLastName,  String candidateArrivalDate, String candidatePassportNo,  boolean kidLess3, boolean kidLess1, int position ) {
+	public Candidate insertCandidate( int candidateNumber, String candidateFirstName, String candidateLastName,  String candidateArrivalDate, String candidatePassportNo,  boolean kidLess3, boolean kidLess1, int position ) {
 		Candidate newCandidate = new Candidate(candidateNumber,  candidateFirstName,  candidateLastName, candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1 );
-			if(size>=position) {
+		if(firstCandidate==null&&lastCandidate==null) {
+			lastCandidate = newCandidate;
+			firstCandidate = newCandidate;
+			newCandidate.nextCandidate = null;
+			newCandidate.pastCandidate = null;
+			}else if(size>=position) {
 			Candidate tempNextCandidate = firstCandidate;
 			Candidate tempPastCandidate = firstCandidate;
 
@@ -70,6 +74,7 @@ public class LinkedList {
 			lastCandidate = newCandidate;
 			}		  
 		size++;
+		return newCandidate;
 	}
 	
 	public void removeFirstCandidate() {
@@ -101,11 +106,12 @@ public void display() {
 		tempCandidate = tempCandidate.nextCandidate;
 		position++;
 	}
+	if(size==0) {	System.out.print("No candidates in the list." );}
 	System.out.println(vl);
 
 }
 
-public Candidate find(int candidateNumber) {
+public Candidate findByID(int candidateNumber) {
 
 	Candidate tempCandidate = firstCandidate;
 	boolean found = false;
@@ -116,7 +122,7 @@ public Candidate find(int candidateNumber) {
 		while(tempCandidate!=null&&found==false) {
 			if(tempCandidate.candidateNumber == candidateNumber) {
 				found = true;
-				tempCandidate.showDetails(position);
+				tempCandidate.showDetails();
 
 			}else {
 			
@@ -134,7 +140,36 @@ public Candidate find(int candidateNumber) {
 	return tempCandidate;
 }
 
-public Candidate removeCandidate(int candidateNumber) {
+public Candidate findByName(String candidateName) {
+
+	Candidate tempCandidate = firstCandidate;
+	boolean found = false;
+	int position = 1;
+	
+	if(isEmpty() ==false) {
+		
+		while(tempCandidate!=null&&found==false) {
+			if(tempCandidate.candidateFirstName.contains(candidateName)) {
+				found = true;
+				tempCandidate.showDetails();
+
+			}else {
+			
+				tempCandidate = tempCandidate.nextCandidate;
+				position++;
+			}
+	
+		}
+
+	} else {
+		System.out.println("\n No Candidate in the list with name :" + candidateName );
+	}
+	
+	
+	return tempCandidate;
+}
+
+public Candidate removeCandidateByID(int candidateNumber) {
 	
 	Candidate currentCandidate = firstCandidate;
 	Candidate previousCandidate = firstCandidate;
@@ -155,8 +190,24 @@ public Candidate removeCandidate(int candidateNumber) {
 		currentCandidate.pastCandidate=previousCandidate;
 	}
 	size--;
+	System.out.println("Candidate removed. ");
 	return currentCandidate;
 	}
+
+public void removeCandidateByPosition(int position) {
+	if(position>size||position<=0) {
+		System.out.println("No candidate at position "+position);
+	} else {
+	Candidate currentCandidate = firstCandidate;
+	
+	for(int i = 0; i<(position-1); i++) {
+		currentCandidate = currentCandidate.nextCandidate;
+	}
+	removeCandidateByID(currentCandidate.candidateNumber);
+
+	}
+	}
+
 
 
 public void cutoffCandidates(int cutoff) {
@@ -169,9 +220,15 @@ public void cutoffCandidates(int cutoff) {
 
 		templastCandidate.nextCandidate = null;
 		size = size- cutoff;
+		System.out.println("Cut off of list completed");
+	}else if(size==cutoff) {
+		firstCandidate = null;
+		lastCandidate = null;
+		size = 0;
+		System.out.println("Cut off of list completed");
+	}else if(cutoff<0||size<cutoff) {
+		System.out.println("Cut off needs number greater than 0 or smaller or equal to "+size);
+		return;
 	}		  
-	
 }
-
-
 }

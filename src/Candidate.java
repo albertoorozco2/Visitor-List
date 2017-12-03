@@ -25,5 +25,9 @@ public class Candidate {
 	
 		System.out.printf("%9s | %-5s| %-15s| %-15s| %-15s| %-15s| %-10s| %-10s|", position, candidateNumber, candidateFirstName, candidateLastName, candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1 );
 	}
-	
+	public void showDetails(){
+		
+		System.out.printf("\nID number : "+ candidateNumber+"\nfirst name : "+ candidateFirstName+"\nlast name : "+ candidateLastName
+				+ "\n arrival date : "+candidateArrivalDate+"\npassport number : "+ candidatePassportNo+"\n Kid less than 3 yo : "+ kidLess3+"\n Kid less than 1 yo : "+ kidLess1 );
+	}
 }
