@@ -45,10 +45,9 @@ public class LinkedList {
 	 *            boolean true if candidate has a kid less than 1 years old
 	 * 
 	 */
-	public Candidate insertCandidate(int candidateNumber, String candidateFirstName, String candidateLastName,
+	public Candidate insertCandidate(String candidateFirstName, String candidateLastName,
 			String candidateArrivalDate, String candidatePassportNo, boolean kidLess3, boolean kidLess1) {
-		Candidate newCandidate = new Candidate(candidateNumber, candidateFirstName, candidateLastName,
-				candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1);
+		Candidate newCandidate = new Candidate(candidateFirstName, candidateLastName, candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1);
 		if (firstCandidate == null && lastCandidate == null) {
 			lastCandidate = newCandidate;
 			firstCandidate = newCandidate;
@@ -103,9 +102,9 @@ public class LinkedList {
 	 *            Integer specific position in LinkedList to insert new candidate
 	 * 
 	 */
-	public Candidate insertCandidate(int candidateNumber, String candidateFirstName, String candidateLastName,
+	public Candidate insertCandidate( String candidateFirstName, String candidateLastName,
 			String candidateArrivalDate, String candidatePassportNo, boolean kidLess3, boolean kidLess1, int position) {
-		Candidate newCandidate = new Candidate(candidateNumber, candidateFirstName, candidateLastName,
+		Candidate newCandidate = new Candidate( candidateFirstName, candidateLastName,
 				candidateArrivalDate, candidatePassportNo, kidLess3, kidLess1);
 		if (firstCandidate == null && lastCandidate == null) {
 			lastCandidate = newCandidate;
@@ -137,7 +136,7 @@ public class LinkedList {
 	/** removeFirstCandidate method remove the first candidate of the LinkedList */
 	public void removeFirstCandidate() {
 
-		Candidate tempCandidate = firstCandidate;
+		//Candidate tempCandidate = firstCandidate;
 
 		if (size == 1) {
 			firstCandidate = null;
@@ -198,9 +197,49 @@ public class LinkedList {
 		if (isEmpty() == false) {
 
 			while (tempCandidate != null && found == false) {
-				if (tempCandidate.candidateNumber == candidateNumber) {
+				if (tempCandidate.getCandidateNumber() == candidateNumber) {
 					found = true;
+					System.out.println("\n\nCandidate in position "+position);
 					tempCandidate.showDetails();
+
+				} else  {
+
+					tempCandidate = tempCandidate.nextCandidate;
+					position++;
+				}
+
+			}
+
+		} else {
+			System.out.println("No Candidate in the List");
+		}
+
+		if (tempCandidate == null && found == false) {
+			System.out.println("\n\n\nNo Candidate found in the List with ID " +candidateNumber );
+
+		}
+
+
+		return tempCandidate;
+	}
+	/**
+	 * findByIDBoolean method search on all the candidates of the LinkedList looking for a
+	 * specific ID and returns the a boolean true if it is found.
+	 * 
+	 * @param candidateNumber
+	 *            Integer ID number of the Candidate to search for
+	 */
+	public boolean findByIDBoolean(int candidateNumber) {
+
+		Candidate tempCandidate = firstCandidate;
+		boolean found = false;
+		int position = 1;
+
+		if (isEmpty() == false) {
+
+			while (tempCandidate != null && found == false) {
+				if (tempCandidate.getCandidateNumber() == candidateNumber) {
+					found = true;
 
 				} else {
 
@@ -214,9 +253,8 @@ public class LinkedList {
 			System.out.println("No Candidate in the List");
 		}
 
-		return tempCandidate;
+		return found;
 	}
-
 	/**
 	 * findByName method search on all the candidates of the LinkedList looking for
 	 * a specific name and returns the Candidate object with details
@@ -233,9 +271,10 @@ public class LinkedList {
 		if (isEmpty() == false) {
 
 			while (tempCandidate != null && found == false) {
-				if (tempCandidate.candidateFirstName.contains(candidateName)
-						|| tempCandidate.candidateLastName.contains(candidateName)) {
+				if (tempCandidate.getCandidateFirstName().contains(candidateName)
+						|| tempCandidate.getCandidateLastName().contains(candidateName)) {
 					found = true;
+					System.out.println("\n\nCandidate in position "+position);
 					tempCandidate.showDetails();
 
 				} else {
@@ -250,6 +289,10 @@ public class LinkedList {
 			System.out.println("\n No Candidate in the list with name :" + candidateName);
 		}
 
+		if (tempCandidate == null && found == false) {
+			System.out.println("\n No Candidate in the list with name :" + candidateName);
+
+		}
 		return tempCandidate;
 	}
 
@@ -257,7 +300,7 @@ public class LinkedList {
 
 		Candidate currentCandidate = firstCandidate;
 		Candidate previousCandidate = firstCandidate;
-		while (currentCandidate.candidateNumber != candidateNumber) {
+		while (currentCandidate.getCandidateNumber() != candidateNumber) {
 			if (currentCandidate.nextCandidate == null) {
 				return null;
 			} else {
@@ -294,7 +337,7 @@ public class LinkedList {
 			for (int i = 0; i < (position - 1); i++) {
 				currentCandidate = currentCandidate.nextCandidate;
 			}
-			removeCandidateByID(currentCandidate.candidateNumber);
+			removeCandidateByID(currentCandidate.getCandidateNumber());
 
 		}
 	}
@@ -328,4 +371,6 @@ public class LinkedList {
 			return;
 		}
 	}
+
+
 }

@@ -11,16 +11,40 @@ import java.util.Scanner;
 
 public class Console {
 	Scanner in = new Scanner(System.in);
-	int candidateNumber = 1;
+	int candidateNumber = 101;
 	LinkedList LinkedList = new LinkedList();
 
 	public Console() {
+		
+		System.out.println("\n"
+ + "\nooooo       o88               o8         o                            "
+ +"\n888        oooo   oooooooo8  o888oo     888    ooooooooo  ooooooooo   "
+ +"\n888         888  888ooooooo   888      8  88    888    888 888    888 "
+ +"\n888         888          888  888     8oooo88   888    888 888    888 "
++"\no888ooooo88 o888o 88oooooo88   888o o88o  o888o 888ooo88   888ooo88   "
++"\n                                                o888       o888  ");
+		
+		LinkedList.insertCandidate("Alex".toUpperCase(), "Rivera".toUpperCase(), "14/14/13", "252536", false, false);
+		LinkedList.insertCandidate("albert".toUpperCase(), "Orozco".toUpperCase(), "15/12/17", "252986", false, false);
+		LinkedList.insertCandidate("Camila".toUpperCase(), "andrade".toUpperCase(), "14/14/14", "879478", false, false);
+		LinkedList.insertCandidate("Pedro".toUpperCase(), "Duenad".toUpperCase(), "14/12/15", "481574", false, false);
+		LinkedList.insertCandidate("Roberto".toUpperCase(), "Mejia".toUpperCase(), "01/11/16", "123456", false, false);
+		LinkedList.insertCandidate("Jose".toUpperCase(), "Rivera".toUpperCase(), "14/14/13", "252536", false, false);
+		LinkedList.insertCandidate("Silver".toUpperCase(), "Orozco".toUpperCase(), "15/12/17", "252986", false, false);
+		LinkedList.insertCandidate("Kasia".toUpperCase(), "andrade".toUpperCase(), "14/14/14", "879478", false, false);
+		LinkedList.insertCandidate("Juanito".toUpperCase(), "Duenas".toUpperCase(), "14/12/15", "481574", true, false);
+		LinkedList.insertCandidate("marcelo".toUpperCase(), "Mejia".toUpperCase(), "01/11/16", "123456", false, true);
+	
 		mainMenu();
 	}
+	
+	
+	
+	
 
 	/**
 	 * mainMenu method first access of the console to the menu by printing the
-	 * available options
+	 * available options in the System
 	 */
 	public void mainMenu() {
 		System.out.println("\n--- Department of Immigration ---\n");
@@ -35,9 +59,8 @@ public class Console {
 		System.out.println(" 8) Remove candidate by position.");
 		System.out.println(" 9) Cut off list of candidates");
 		System.out.println(" 10) Update candidate details.");
-		System.out.println("\n\n\n");
 		String option = in.nextLine();
-		while (option.matches("[1-9]") == false) {
+		while (option.matches("[0-9]|10") == false) {
 			System.out.println(option + " is not a valid selection\n Try again");
 			option = in.nextLine();
 		}
@@ -65,12 +88,12 @@ public class Console {
 			System.out.println("\n\n 5) View candidate position by name.");
 			System.out.println("\n\nType name of candidate to search.");
 			String findName = in.nextLine();
-			LinkedList.findByName(findName);
+			LinkedList.findByName(findName.toUpperCase());
 			backMainMenu();
 			break;
 		case 6:
 			System.out.println("\n\n 6) View candidate position by ID.");
-			System.out.println("\n\nType ID of candidate to search.");
+			System.out.println("\nType ID of candidate to search.");
 			String findID = in.nextLine();
 			while (findID.matches("^\\d*[0-9]\\d*$") == false) {
 				System.out.println(findID + " is not a valid ID\n Try again");
@@ -81,7 +104,8 @@ public class Console {
 			break;
 		case 7:
 			System.out.println("\n\n 7) Remove candidate by ID.");
-			System.out.println("\n\nType ID of candidate to remove.");
+			LinkedList.display();
+			System.out.println("\nType ID of candidate to remove.");
 			String removeID = in.nextLine();
 			while (removeID.matches("^\\d*[0-9]\\d*$") == false) {
 				System.out.println(removeID + " is not a valid ID\n Try again");
@@ -92,6 +116,7 @@ public class Console {
 			break;
 		case 8:
 			System.out.println("\n\n 8) Remove candidate by position.");
+			LinkedList.display();
 			System.out.println("\n\nType position of candidate to remove. current size of list: " + LinkedList.size);
 			String removePosition = in.nextLine();
 			while (removePosition.matches("^\\d*[0-9]\\d*$") == false) {
@@ -103,6 +128,7 @@ public class Console {
 			break;
 		case 9:
 			System.out.println("\n\n 9) Cut off list");
+			LinkedList.display();
 			System.out
 					.println("\n\nType number of candidates to remove from the back of the list, current size of list: "
 							+ LinkedList.size);
@@ -114,17 +140,40 @@ public class Console {
 			LinkedList.cutoffCandidates(Integer.parseInt(cutOffNum));
 			backMainMenu();
 			break;
+		case 10:
+			
+			System.out.println("\n\n 10) Update Candidate ");
+			//LinkedList.display();
+			if(LinkedList.isEmpty()!=true){
+
+			LinkedList.display();
+			System.out.println("\n\nType id of candidate to update." );
+			String idToUpdate = in.nextLine();
+			while (idToUpdate.matches("^\\d*[0-9]\\d*$") == false||LinkedList.findByIDBoolean(Integer.parseInt(idToUpdate))==false) {
+				
+				System.out.println(idToUpdate + " is not a valid ID\n Try again");
+				idToUpdate = in.nextLine();
+			
+			}
+			updateAcandidate(Integer.parseInt(idToUpdate));
+			}else{
+				System.out.println("\n\nNo candidates on the list");
+					
+			}
+			backMainMenu();
+			break;
 		default:
 			System.out.println(inNum + ": Is not a valid selection");
+			backMainMenu();
 			break;
 
 		}
 
 	}
-
+  
 	/**
 	 * addPerson method gather the data needed to create and insert a new person to
-	 * the linked
+	 * the linked list
 	 * 
 	 * @param position
 	 *            boolean when true the method display for input the position for
@@ -134,14 +183,15 @@ public class Console {
 		boolean kidLess1 = false;
 		boolean kidLess3 = false;
 		int positionList = 0;
+		
 		System.out.println("\nType first name:");
-		String firstName = in.nextLine();
+		String firstName = inputAnyData();
 		System.out.println("\nType last name:");
-		String lastName = in.nextLine();
+		String lastName = inputAnyData();
 		System.out.println("\nType a arrival date:");
-		String date = in.nextLine();
+		String date = inputAnyData();
 		System.out.println("\nType passport number:");
-		String passport = in.nextLine();
+		String passport = inputAnyData();
 		System.out.println("\nDoes candidate have a kid lees than 1 year old?  Y / N");
 		String kid1 = in.nextLine();
 		while (kid1.matches("[yYnN]") == false) {
@@ -172,7 +222,7 @@ public class Console {
 			}
 
 			positionList = Integer.parseInt(option);
-			Candidate newCandidate = LinkedList.insertCandidate(candidateNumber, firstName, lastName, date, passport,
+			Candidate newCandidate = LinkedList.insertCandidate( firstName.toUpperCase(), lastName.toUpperCase(), date, passport,
 					kidLess3, kidLess1, positionList);
 			System.out.println("\nYou have registered the following person:");
 			newCandidate.showDetails();
@@ -180,7 +230,7 @@ public class Console {
 			backMainMenu();
 		}
 
-		Candidate newCandidate = LinkedList.insertCandidate(candidateNumber, firstName, lastName, date, passport,
+		Candidate newCandidate = LinkedList.insertCandidate( firstName.toUpperCase(), lastName.toUpperCase(), date, passport,
 				kidLess3, kidLess1);
 		System.out.println("\nYou have registered the following person:");
 		newCandidate.showDetails();
@@ -188,11 +238,45 @@ public class Console {
 		backMainMenu();
 	}
 	/**
+	 * updateAcandidate method gather the data needed to update an existing Candidate in  the linked list
+	 * without affecting their position in the list
+	 * 
+	 * @param candidateNumber
+	 *            takes this parameter to find the person ID within the linked list
+	 *            gathering all of their data related with the ID selected and then 
+	 *            updating the data
+	 */
+	public void updateAcandidate(int candidateNumber) {
+		Candidate tempCandidate = LinkedList.findByID(candidateNumber);
+		String tempValue;
+		
+		System.out.println("\n\nType in The new First name");
+		tempValue = inputAnyData();	
+		tempCandidate.setCandidateFirstName(tempValue.toUpperCase());
+		
+		System.out.println("\nType in The new Last name");
+		tempValue = inputAnyData();	
+		tempCandidate.setCandidateLastName(tempValue.toUpperCase());
+		
+		System.out.println("\nType in The new Arrival Date");
+		tempValue = inputAnyData();	
+		tempCandidate.setCandidateArrivalDate(tempValue);
+		
+		System.out.println("\nType in The new Passport");
+		tempValue = inputAnyData();	
+		tempCandidate.setCandidatePassportNo(tempValue);
+		
+		System.out.println("\nCandidate Succesfully updated.");
+
+		
+		}
+	
+	/**
 	 * backMainMenu method return to the main menu  by typing any key.
 	 * 
 	 */
 	public void backMainMenu() {
-		System.out.println("\n\n\nPress enter key to go back to main menu");
+		System.out.println("\n\n\nPress ENTER key to go back to main menu");
 		String any = in.nextLine();
 		if (any != null) {
 			//System.out.println("\n\n\n");
@@ -201,6 +285,21 @@ public class Console {
 			mainMenu();
 		}
 
+	}
+	
+	
+	/**
+	 * inputAnyData method check that user input something and return a string.
+	 * 
+	 */
+	public String inputAnyData(){
+		
+		String tempValue = in.nextLine();
+		while (tempValue.equals("")) {
+			System.out.println(" It is not a valid input, Type something, Please");
+			tempValue = in.nextLine();
+		}
+		return tempValue;
 	}
 
 	public static void main(String[] args) {
