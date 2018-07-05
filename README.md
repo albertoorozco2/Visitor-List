@@ -34,6 +34,7 @@ Use a Linked List data structure to store the data.
 
 ## Contributing
 Pedro Alberto Duenas Orozco 
+
 Roberto Alejandro Rivera
 
 
